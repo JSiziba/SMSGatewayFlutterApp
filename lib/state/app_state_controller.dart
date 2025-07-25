@@ -97,6 +97,7 @@ class AppStateController extends GetxController {
       final index = _smsSes.indexWhere((msg) => msg.id == id);
       if (index != -1) {
         _smsSes[index] = updatedMessage;
+        debugPrint(updatedMessage.toJson().toString());
       }
     }).catchError((error) {
       debugPrint('Error updating SMS message: $error');
@@ -113,6 +114,7 @@ class AppStateController extends GetxController {
     final index = _smsSes.indexWhere((msg) => msg.id == id);
     if (index != -1) {
       final updatedMessage = _smsSes[index];
+      updatedMessage.deliveryStatus = status;
       updateSMSById(id, updatedMessage);
     }
   }

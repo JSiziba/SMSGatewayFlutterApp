@@ -91,6 +91,7 @@ class SMSService {
         'phoneNumber': sms.phoneNumber,
         'message': sms.message,
       });
+      debugPrint('SMS sent: $sent');
       if (sent) {
         appStateController.updateSMSDeliveryStatus(
           sms.id,

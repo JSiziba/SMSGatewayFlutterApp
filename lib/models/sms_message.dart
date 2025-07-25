@@ -37,7 +37,7 @@ class SMSMessage {
       message: json['message'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       type: SMSType.values.firstWhere(
-        (e) => e.toString() == 'SMSType.${json['type']}',
+        (e) => e.toString().split('.').last == json['smsType'],
         orElse: () => SMSType.other,
       ),
     );
