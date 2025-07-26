@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smsgateway/components/custom_button.dart';
 import 'package:smsgateway/custom_colors.dart';
 import 'package:smsgateway/models/sms_message.dart';
 
@@ -59,11 +58,6 @@ class MessageComponent extends StatelessWidget {
             spacing: 10,
             children: [
               getMessageStatusIcon(),
-              if (message.deliveryStatus == DeliveryStatus.failed)
-                CustomButton(
-                  onTap: () {},
-                  title: "Resend",
-                ),
               Spacer(),
               Text(
                 getTimeAgo(message.createdAt),
@@ -81,20 +75,24 @@ class MessageComponent extends StatelessWidget {
   }
 
   String getTimeAgo(DateTime dateTime) {
+    final localDateTime = dateTime.toLocal();
     final now = DateTime.now();
-    final difference = now.difference(dateTime);
+    final difference = now.difference(localDateTime);
+
+    final formattedTime =
+        '${localDateTime.hour.toString().padLeft(2, '0')}:${localDateTime.minute.toString().padLeft(2, '0')}';
 
     if (difference.inDays > 0) {
       if (difference.inDays == 1) {
-        return 'Yesterday, ${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
+        return 'Yesterday, $formattedTime';
       } else {
-        if (dateTime.year != now.year) {
-          return '${dateTime.day} ${getMonthName(dateTime.month)}, ${dateTime.year}, ${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
+        if (localDateTime.year != now.year) {
+          return '${localDateTime.day} ${getMonthName(localDateTime.month)}, ${localDateTime.year}, $formattedTime';
         }
-        return '${dateTime.day} ${getMonthName(dateTime.month)}, ${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
+        return '${localDateTime.day} ${getMonthName(localDateTime.month)}, $formattedTime';
       }
     }
-    return '${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
+    return formattedTime;
   }
 
   getMonthName(int month) {
@@ -138,21 +136,21 @@ class MessageComponent extends StatelessWidget {
   }
 
   Widget getMessageTypeIcon() {
-    if (message.type == SMSType.otp) {
+    if (message.smsType == SMSType.otp) {
       return Icon(
         size: 18,
         color: CustomColors.otpColor,
         Icons.key_rounded,
       );
     }
-    if (message.type == SMSType.notification) {
+    if (message.smsType == SMSType.notification) {
       return Icon(
         size: 18,
         color: CustomColors.notificationColor,
         Icons.notifications,
       );
     }
-    if (message.type == SMSType.promotional) {
+    if (message.smsType == SMSType.promotional) {
       return Icon(
         size: 18,
         color: CustomColors.promotionColor,

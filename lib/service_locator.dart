@@ -13,7 +13,6 @@ Future<void> setupServiceLocator() async {
       Get.put<SMSMessagesRepository>(SMSMessagesRepository());
   final appState = Get.put<AppStateController>(AppStateController());
   final smsService = Get.put<SMSService>(SMSService());
-  await smsService.initialize();
   final webSocketService = Get.put<WebSocketService>(WebSocketService());
   final apiService = Get.put<ApiService>(ApiService());
 }

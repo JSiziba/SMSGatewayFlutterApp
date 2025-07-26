@@ -18,15 +18,16 @@ class SMSMessage {
   String phoneNumber;
   String message;
   DateTime createdAt;
-  DeliveryStatus deliveryStatus = DeliveryStatus.pending;
-  SMSType type;
+  DeliveryStatus deliveryStatus;
+  SMSType smsType;
 
   SMSMessage({
     required this.id,
     required this.phoneNumber,
     required this.message,
     required this.createdAt,
-    required this.type,
+    required this.smsType,
+    required this.deliveryStatus,
   });
 
   factory SMSMessage.fromJson(String message) {
@@ -36,9 +37,13 @@ class SMSMessage {
       phoneNumber: json['phoneNumber'] as String,
       message: json['message'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      type: SMSType.values.firstWhere(
+      smsType: SMSType.values.firstWhere(
         (e) => e.toString().split('.').last == json['smsType'],
         orElse: () => SMSType.other,
+      ),
+      deliveryStatus: DeliveryStatus.values.firstWhere(
+        (e) => e.toString().split('.').last == json['deliveryStatus'],
+        orElse: () => DeliveryStatus.pending,
       ),
     );
   }
@@ -50,7 +55,7 @@ class SMSMessage {
       'message': message,
       'createdAt': createdAt.toIso8601String(),
       'deliveryStatus': deliveryStatus.toString().split('.').last,
-      'type': type.toString().split('.').last,
+      'smsType': smsType.toString().split('.').last,
     };
   }
 }

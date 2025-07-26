@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:smsgateway/custom_colors.dart';
 import 'package:smsgateway/service_locator.dart';
+import 'package:smsgateway/services/sms_service.dart';
 import 'package:smsgateway/sms_gateway.dart';
 
 Future<void> main() async {
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'SMS Gateway',
+      onInit: () {
+        SMSService.to.initialize();
+      },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
